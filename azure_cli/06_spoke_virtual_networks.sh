@@ -85,6 +85,22 @@ CreateSpokeVNet() {
 
     echo ""
 
+    echo "[INFO] Checking if Resource Group exists..."
+
+RG_EXISTS=$(az group exists \
+    --name "$RG_NAME")
+
+if [ "$RG_EXISTS" = "false" ]
+then
+
+    echo "[ERROR] Resource Group $RG_NAME does not exist."
+
+    ((FAILED++))
+
+    return
+
+fi
+
 echo "[INFO] Checking if Virtual Network exists..."
 
 EXISTS=$(az network vnet list \
@@ -102,6 +118,42 @@ then
     return
 
 fi
+
+echo "[INFO] Creating Virtual Network..."
+
+az network vnet create \
+    --resource-group "$RG_NAME" \
+    --name "$VNET_NAME" \
+    --location "$LOCATION" \
+    --address-prefixes "$ADDRESS_SPACE" \
+    --output none
+
+    if [ $? -eq 0 ]
+then
+
+    echo "[SUCCESS] $VNET_NAME deployed successfully."
+
+    ((SUCCESS++))
+
+else
+
+    echo "[ERROR] Failed deploying $VNET_NAME."
+
+    ((FAILED++))
+
+    return
+
+fi
+
+echo ""
+
+echo "[INFO] Verifying deployment..."
+
+az network vnet show \
+    --resource-group "$RG_NAME" \
+    --name "$VNET_NAME" \
+    --query "{Name:name,AddressSpace:addressSpace.addressPrefixes[0]}" \
+    --output table
 
 }
 
@@ -159,3 +211,23 @@ do
     CreateSpokeVNet "$SITE" "$PREFIX"
 
 done
+
+############################################################
+# SUMMARY
+############################################################
+
+echo ""
+
+echo "=========================================="
+
+echo " Deployment Summary"
+
+echo "=========================================="
+
+echo "Successful : $SUCCESS"
+
+echo "Skipped    : $SKIPPED"
+
+echo "Failed     : $FAILED"
+
+echo ""
