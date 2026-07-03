@@ -31,7 +31,7 @@ Deploy the Azure Landing Zone Foundation.
 
 ## User Stories
 
-### US-001
+### US-002
 
 As a Cloud Infrastructure Engineer,
 
@@ -63,7 +63,7 @@ WarehousePro Azure Subscription
 
 ---
 
-### US-002
+### US-003
 
 As a Cloud Infrastructure Engineer,
 
@@ -73,7 +73,7 @@ so Azure resources can be governed and tracked.
 
 ---
 
-### US-003
+### US-004
 
 As a Cloud Infrastructure Engineer,
 
@@ -83,7 +83,7 @@ so shared networking services have a secure central location.
 
 ---
 
-### US-004
+### US-005
 
 As a Security Administrator,
 
