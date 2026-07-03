@@ -1,0 +1,285 @@
+# ADR-009: Adopt a Hierarchical Hub Virtual Network Subnet Design
+
+## Status
+
+Approved
+
+---
+
+## Date
+
+02 July 2026
+
+---
+
+## Decision Drivers
+
+- Enterprise Network Design
+- Scalability
+- Security
+- Azure Service Requirements
+- Operational Simplicity
+- Future Expansion
+
+---
+
+## Decision Owners
+
+Cloud Infrastructure Engineer - Nhlanhla M
+
+Project Sponsor (CIO)
+
+Infrastructure Team
+
+---
+
+# Context
+
+WarehousePro Logistics is deploying a centralized Hub Virtual Network as the core networking component of its Azure Landing Zone.
+
+The Hub Virtual Network will provide shared connectivity and networking services for all warehouse and business unit spoke networks.
+
+As additional Azure services are introduced, the Hub must support secure routing, centralized security, remote administration, hybrid connectivity, and shared infrastructure services without requiring future redesign.
+
+The Hub Virtual Network must therefore be designed with sufficient address space and a structured subnet allocation strategy.
+
+---
+
+# Problem Statement
+
+A decision must be made regarding how address space inside the Hub Virtual Network will be allocated.
+
+Several approaches were considered:
+
+- Small address space with minimal subnets
+- Flat subnet allocation
+- Hierarchical subnet allocation with reserved address space
+
+The selected design must support future Azure services while maintaining operational simplicity and predictable network management.
+
+---
+
+# Decision
+
+WarehousePro Logistics will deploy the Hub Virtual Network using a hierarchical subnet allocation model.
+
+The Hub Virtual Network will use the following address space:
+
+- 10.0.0.0/16
+
+Dedicated subnets will be created for Azure platform services.
+
+| Subnet | Address Space |
+|---------|---------------|
+| AzureFirewallSubnet | 10.0.0.0/24 |
+| AzureBastionSubnet | 10.0.1.0/26 |
+| GatewaySubnet | 10.0.2.0/27 |
+| SharedServicesSubnet | 10.0.10.0/24 |
+| ManagementSubnet | 10.0.20.0/24 |
+
+Additional address space will remain reserved for future Azure networking services.
+
+---
+
+# Business Justification
+
+The hierarchical subnet design provides several business advantages.
+
+## Scalability
+
+Additional Azure services can be introduced without renumbering existing networks.
+
+Reserved address space enables future expansion while minimizing operational disruption.
+
+---
+
+## Improved Security
+
+Azure platform services are isolated into dedicated subnets.
+
+This supports centralized security inspection and simplifies Network Security Group implementation.
+
+---
+
+## Operational Simplicity
+
+Each subnet has a clearly defined purpose.
+
+This improves troubleshooting, documentation, and long-term maintenance.
+
+Infrastructure engineers can immediately identify the function of each subnet.
+
+---
+
+## Azure Best Practices
+
+Several Azure services require dedicated subnet names, including:
+
+- Azure Firewall
+- Azure Bastion
+- VPN Gateway
+
+Following Microsoft's recommended subnet design improves compatibility with future Azure services.
+
+---
+
+## Future Expansion
+
+Reserved address ranges allow WarehousePro to deploy additional shared infrastructure such as:
+
+- Azure DNS Private Resolver
+- Azure Route Server
+- Azure Virtual WAN
+- Azure Firewall Premium
+- Azure Virtual Desktop
+- Future management services
+
+without redesigning the Hub Virtual Network.
+
+---
+
+# Alternatives Considered
+
+## Option 1 - Small Address Space
+
+### Description
+
+Deploy the Hub Virtual Network using a small address space such as /24.
+
+### Advantages
+
+- Simpler initial deployment
+
+- Smaller IP allocation
+
+### Disadvantages
+
+- Limited future expansion
+
+- Higher likelihood of network redesign
+
+- Increased operational risk
+
+Decision:
+
+Rejected
+
+---
+
+## Option 2 - Flat Subnet Allocation
+
+### Description
+
+Create subnets only as Azure services are deployed.
+
+### Advantages
+
+- Minimal planning required
+
+### Disadvantages
+
+- Inconsistent subnet allocation
+
+- Difficult documentation
+
+- Reduced predictability
+
+- Harder long-term management
+
+Decision:
+
+Rejected
+
+---
+
+## Option 3 - Hierarchical Subnet Allocation
+
+### Description
+
+Deploy the Hub Virtual Network using a structured subnet allocation model with reserved address space.
+
+### Advantages
+
+- Predictable network design
+
+- Easier troubleshooting
+
+- Supports future Azure services
+
+- Aligns with Microsoft networking guidance
+
+- Simplifies documentation
+
+Decision:
+
+Approved
+
+---
+
+# Consequences
+
+Positive Outcomes
+
+- Predictable subnet allocation
+
+- Easier network troubleshooting
+
+- Supports future Azure services
+
+- Improved operational consistency
+
+- Reduced likelihood of future network redesign
+
+- Simplified documentation
+
+Potential Trade-offs
+
+- Larger address space allocated initially
+
+- Some address space remains unused during early deployment
+
+These trade-offs are considered acceptable because they significantly reduce future operational complexity and support long-term business growth.
+
+---
+
+# Future Considerations
+
+As WarehousePro expands its Azure platform, the Hub Virtual Network can support:
+
+- ExpressRoute Gateway
+
+- Azure Route Server
+
+- Azure DNS Private Resolver
+
+- Azure Virtual WAN
+
+- Azure Firewall Premium
+
+- Additional management services
+
+without requiring changes to the existing subnet structure.
+
+---
+
+# References
+
+Microsoft Cloud Adoption Framework
+
+Microsoft Azure Well-Architected Framework
+
+Azure Virtual Network Design Best Practices
+
+Azure Landing Zone Design Principles
+
+---
+
+## Approval
+
+Status:
+
+Approved
+
+Implementation Phase:
+
+Phase 2 – Enterprise Networking
