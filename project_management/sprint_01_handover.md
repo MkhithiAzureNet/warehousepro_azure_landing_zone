@@ -86,7 +86,7 @@ The following deployment scripts were developed and tested.
 
 - RG-WH-JHB-Prod
 
-- RG-WH-Durban-Prod
+- RG-WH-DBN-Prod
 
 - RG-WH-CPT-Prod
 

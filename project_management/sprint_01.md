@@ -53,7 +53,7 @@ WarehousePro Azure Subscription
 │
 ├── RG-WH-JHB-Prod
 │
-├── RG-WH-Durban-Prod
+├── RG-WH-DBN-Prod
 │
 ├── RG-WH-CPT-Prod
 │

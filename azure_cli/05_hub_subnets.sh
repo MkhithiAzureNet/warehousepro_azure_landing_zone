@@ -50,7 +50,7 @@ RESOURCE_GROUPS=(
 "RG-Monitoring-$ENVIRONMENT"
 "RG-SharedServices-$ENVIRONMENT"
 "RG-WH-JHB-$ENVIRONMENT"
-"RG-WH-Durban-$ENVIRONMENT"
+"RG-WH-DBN-$ENVIRONMENT"
 "RG-WH-CPT-$ENVIRONMENT"
 )
 
@@ -187,7 +187,7 @@ az network vnet subnet list \
     --query "[].{Subnet:name,Prefix:addressPrefix}" \
     --output table
 
-    ############################################################
+############################################################
 # SUMMARY
 ############################################################
 

@@ -148,7 +148,7 @@ VNET-WH-JHB-Prod
 
 ↓
 
-VNET-WH-Durban-Prod
+VNET-WH-DBN-Prod
 
 ↓
 
