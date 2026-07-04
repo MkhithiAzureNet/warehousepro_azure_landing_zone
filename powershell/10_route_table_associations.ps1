@@ -29,7 +29,7 @@ $Environment = "Prod"
 # ROUTE TABLE ASSOCIATIONS
 ############################################################
 
-$Associations = @(
+$RouteTableAssociations = @(
     "JHB",
     "DBN",
     "CPT"
@@ -40,6 +40,7 @@ $Associations = @(
 ############################################################
 
 Write-Host ""
+
 Write-Host "Checking Azure Login..."
 
 try
@@ -49,11 +50,14 @@ try
 catch
 {
     Write-Host ""
+
     Write-Host "ERROR: Not logged into Azure." -ForegroundColor Red
+
     return
 }
 
 Write-Host ""
+
 Write-Host "Azure login successful." -ForegroundColor Green
 
 Write-Host ""
@@ -66,7 +70,7 @@ Write-Host "Current Subscription"
 # FUNCTIONS
 ############################################################
 
-function Set-RouteTableAssociation
+function Associate-RouteTable
 {
     param
     (
@@ -77,7 +81,9 @@ function Set-RouteTableAssociation
 
     $VNetName = "VNET-WH-$Site-$Environment"
 
-    $RouteTable = "RT-WH-$Site-$Environment"
+    $SubnetName = "WarehouseSubnet"
+
+    $RouteTableName = "RT-WH-$Site-$Environment"
 
     Write-Host ""
 
@@ -91,11 +97,17 @@ function Set-RouteTableAssociation
 
     Write-Host "Virtual Network: $VNetName"
 
-    Write-Host "Route Table    : $RouteTable"
+    Write-Host "Subnet         : $SubnetName"
+
+    Write-Host "Route Table    : $RouteTableName"
 
     Write-Host ""
 
-    Write-Host "[INFO] Validating Resource Group..."
+########################################################
+# Validate Resource Group
+########################################################
+
+Write-Host "[INFO] Validating Resource Group..."
 
 $RGObject = Get-AzResourceGroup `
     -Name $ResourceGroup `
@@ -111,6 +123,10 @@ if ($null -eq $RGObject)
 }
 
 Write-Host ""
+
+########################################################
+# Validate Virtual Network
+########################################################
 
 Write-Host "[INFO] Validating Virtual Network..."
 
@@ -130,11 +146,15 @@ if ($null -eq $VNetObject)
 
 Write-Host ""
 
+########################################################
+# Validate Route Table
+########################################################
+
 Write-Host "[INFO] Validating Route Table..."
 
 $RouteTableObject = Get-AzRouteTable `
     -ResourceGroupName $ResourceGroup `
-    -Name $RouteTable `
+    -Name $RouteTableName `
     -ErrorAction SilentlyContinue
 
 if ($null -eq $RouteTableObject)
@@ -148,11 +168,16 @@ if ($null -eq $RouteTableObject)
 
 Write-Host ""
 
+########################################################
+# Retrieve Warehouse Subnet
+########################################################
+
 Write-Host "[INFO] Retrieving Warehouse subnet..."
 
 $SubnetObject = Get-AzVirtualNetworkSubnetConfig `
     -VirtualNetwork $VNetObject `
-    -Name "WarehouseSubnet"
+    -Name $SubnetName `
+    -ErrorAction SilentlyContinue
 
 if ($null -eq $SubnetObject)
 {
@@ -164,6 +189,66 @@ if ($null -eq $SubnetObject)
 }
 
 Write-Host ""
+
+########################################################
+# Associate Route Table
+########################################################
+
+Write-Host "[INFO] Associating Route Table..."
+
+try
+{
+    $SubnetObject.RouteTable = $RouteTableObject
+
+    $VNetObject | Set-AzVirtualNetwork `
+        -ErrorAction Stop | Out-Null
+
+    Write-Host "[SUCCESS] Route Table associated." -ForegroundColor Green
+}
+catch
+{
+    Write-Host "[ERROR] Failed associating Route Table." -ForegroundColor Red
+
+    Write-Host $_.Exception.Message
+
+    $Failed++
+
+    return
+}
+
+Write-Host ""
+
+########################################################
+# Verify Association
+########################################################
+
+Write-Host "[INFO] Verifying association..."
+
+$Verification = Get-AzVirtualNetworkSubnetConfig `
+    -VirtualNetwork $VNetObject `
+    -Name $SubnetName
+
+$Verification |
+Select-Object Name,
+@{
+    Name="RouteTable"
+    Expression={
+        if ($_.RouteTable)
+        {
+            $_.RouteTable.Id.Split("/")[-1]
+        }
+        else
+        {
+            "None"
+        }
+    }
+} |
+Format-Table
+
+$Successful++
+
+Write-Host ""
+
 }
 
 ############################################################
@@ -186,7 +271,23 @@ $Failed = 0
 
 $Skipped = 0
 
-foreach ($Site in $Associations)
+foreach ($Site in $RouteTableAssociations)
 {
-    Set-RouteTableAssociation -Site $Site
+    Associate-RouteTable -Site $Site
 }
+
+############################################################
+# SUMMARY
+############################################################
+
+Write-Host ""
+
+Write-Host "=========================================="
+Write-Host " Deployment Summary"
+Write-Host "=========================================="
+
+Write-Host "Successful : $Successful"
+Write-Host "Skipped    : $Skipped"
+Write-Host "Failed     : $Failed"
+
+Write-Host ""
