@@ -145,7 +145,7 @@ so future engineers understand the enterprise network design.
 
 ✔ Spoke Subnets deployed
 
-⬜ Route Tables associated
+✔ Route Tables associated
 
 ⬜ Connectivity validated
 
