@@ -28,20 +28,7 @@ The goal is to simulate a real production deployment suitable for a medium-sized
 | BR-007 | Minimize operational costs               |
 | BR-008 | Use least-privilege access               |
 
-## Naming Standard
-<ResourceType>-<BusinessUnit>-<Environment>-<Number>
-| Resource        | Name               |
-| --------------- | ------------------ |
-| Resource Group  | RG-Networking-Prod |
-| Resource Group  | RG-Warehouse-Prod  |
-| Virtual Network | VNET-Hub-Prod      |
-| VM              | VM-DC01            |
-| VM              | VM-WEB01           |
-| Firewall        | FW-Hub-Prod        |
-| Bastion         | BAS-Hub-Prod       |
-| Key Vault       | KV-Warehouse-Prod  |
-| Log Analytics   | LAW-Prod           |
-| Recovery Vault  | RSV-Prod           |
+
 
 ## Tagging Standard
 | Tag          | Example        |
@@ -66,34 +53,3 @@ It helps with RBAC.
 | RG-Management-Prod     | Jump Box, Automation                  |
 | RG-Monitoring-Prod     | Log Analytics, Monitor, Alerts        |
 | RG-SharedServices-Prod | Storage, Key Vault, Recovery Services |
-
-## IP Address Plan
-| VNet            | Address Space |
-| --------------- | ------------- |
-| Hub             | 10.0.0.0/16   |
-| Identity        | 10.1.0.0/16   |
-| Warehouse       | 10.2.0.0/16   |
-| Finance         | 10.3.0.0/16   |
-| Management      | 10.4.0.0/16   |
-| Shared Services | 10.5.0.0/16   |
-
-For the Hub:
-| Subnet              | Network      |
-| ------------------- | ------------ |
-| AzureFirewallSubnet | 10.0.1.0/24  |
-| AzureBastionSubnet  | 10.0.2.0/24  |
-| GatewaySubnet       | 10.0.3.0/24  |
-| Shared Services     | 10.0.10.0/24 |
-
-## Security Principles
-For this project:
-
-* No production VM receives a public IP.
-* All internet traffic is inspected by Azure Firewall.
-* Administrators use Azure Bastion.
-* Secrets are stored in Azure Key Vault.
-* Least privilege RBAC.
-* All storage uses Private Endpoints.
-* Monitoring enabled on every critical resource.
-* Diagnostic logs sent to Log Analytics.
-* NSGs follow a default-deny approach.
