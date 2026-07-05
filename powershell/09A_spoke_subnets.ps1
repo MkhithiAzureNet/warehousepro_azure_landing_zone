@@ -30,9 +30,9 @@ $Environment = "Prod"
 ############################################################
 
 $SpokeSubnets = @(
-    "JHB:10.1.0.0/24",
-    "DBN:10.2.0.0/24",
-    "CPT:10.3.0.0/24"
+    "JHB:10.1.1.0/24",
+    "DBN:10.2.1.0/24",
+    "CPT:10.3.1.0/24"
 )
 
 ############################################################
@@ -79,7 +79,7 @@ function Create-SpokeSubnet
 
     $VNetName = "VNET-WH-$Site-$Environment"
 
-    $SubnetName = "WarehouseSubnet"
+    $SubnetName = "WorkloadSubnet"
 
     Write-Host ""
 
@@ -197,7 +197,7 @@ Write-Host ""
 
 Write-Host "=========================================="
 
-Write-Host " Deploying Warehouse Subnets"
+Write-Host " Deploying Workload Subnets"
 
 Write-Host "=========================================="
 

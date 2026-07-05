@@ -81,7 +81,7 @@ function Associate-RouteTable
 
     $VNetName = "VNET-WH-$Site-$Environment"
 
-    $SubnetName = "WarehouseSubnet"
+    $SubnetName = "WorkloadSubnet"
 
     $RouteTableName = "RT-WH-$Site-$Environment"
 
@@ -169,10 +169,10 @@ if ($null -eq $RouteTableObject)
 Write-Host ""
 
 ########################################################
-# Retrieve Warehouse Subnet
+# Retrieve Workload Subnet
 ########################################################
 
-Write-Host "[INFO] Retrieving Warehouse subnet..."
+Write-Host "[INFO] Retrieving Workload subnet..."
 
 $SubnetObject = Get-AzVirtualNetworkSubnetConfig `
     -VirtualNetwork $VNetObject `
@@ -181,7 +181,7 @@ $SubnetObject = Get-AzVirtualNetworkSubnetConfig `
 
 if ($null -eq $SubnetObject)
 {
-    Write-Host "[ERROR] Warehouse subnet not found." -ForegroundColor Red
+    Write-Host "[ERROR] Workload subnet not found." -ForegroundColor Red
 
     $Failed++
 

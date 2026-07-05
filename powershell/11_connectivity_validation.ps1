@@ -81,7 +81,7 @@ function Test-WarehouseDeployment
 
     $VNetName = "VNET-WH-$Site-$Environment"
 
-    $SubnetName = "WarehouseSubnet"
+    $SubnetName = "WorkloadSubnet"
 
     $NSGName = "NSG-WH-$Site-$Environment"
 
@@ -155,10 +155,10 @@ Write-Host "[PASS] Virtual Network found." -ForegroundColor Green
 Write-Host ""
 
 ########################################################
-# Validate Warehouse Subnet
+# Validate Workload Subnet
 ########################################################
 
-Write-Host "[INFO] Validating Warehouse Subnet..."
+Write-Host "[INFO] Validating Workload Subnet..."
 
 $SubnetObject = Get-AzVirtualNetworkSubnetConfig `
     -VirtualNetwork $VNetObject `
@@ -167,14 +167,14 @@ $SubnetObject = Get-AzVirtualNetworkSubnetConfig `
 
 if ($null -eq $SubnetObject)
 {
-    Write-Host "[FAILED] Warehouse Subnet not found." -ForegroundColor Red
+    Write-Host "[FAILED] Workload Subnet not found." -ForegroundColor Red
 
     $Failed++
 
     return
 }
 
-Write-Host "[PASS] Warehouse Subnet found." -ForegroundColor Green
+Write-Host "[PASS] Workload Subnet found." -ForegroundColor Green
 
 Write-Host ""
 
