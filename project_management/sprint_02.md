@@ -147,7 +147,7 @@ so future engineers understand the enterprise network design.
 
 ✔ Route Tables associated
 
-⬜ Connectivity validated
+✔ Connectivity validated
 
 ⬜ Documentation updated
 

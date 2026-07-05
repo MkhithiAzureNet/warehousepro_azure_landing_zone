@@ -19,7 +19,7 @@ The project is delivered incrementally through Agile sprints.
 | Sprint | Focus | Status |
 |---------|-------|--------|
 | Sprint 01 | Azure Landing Zone Foundation | ✅ Complete |
-| Sprint 02 | Enterprise Networking | 🟡 In Progress |
+| Sprint 02 | Enterprise Networking | ✅ Complete |
 | Sprint 03 | Azure Bicep Implementation | ⬜ Planned |
 | Sprint 04 | Terraform Implementation | ⬜ Planned |
 
@@ -52,7 +52,7 @@ Completed
 - Network Security Groups
 - Route Tables
 
-In Progress
+Completed
 
 - Spoke Subnets
 - Route Table Associations
@@ -61,7 +61,7 @@ In Progress
 
 Status
 
-🟡 In Progress
+✅ Complete
 
 ---
 
