@@ -31,7 +31,7 @@ Sprint 1 ✅ Foundation
 
 Sprint 2 ✅ Enterprise Networking
 
-Sprint 3 🔄 Compute
+Sprint 3 🔄 Bicep
 
 Sprint 4 ⏳ Security
 
@@ -39,9 +39,7 @@ Sprint 5 ⏳ Monitoring
 
 Sprint 6 ⏳ Governance
 
-Sprint 7 ⏳ Bicep
-
-Sprint 8 ⏳ Terraform
+Sprint 7 ⏳ Terraform
 
 ## Features
 
