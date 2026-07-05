@@ -149,7 +149,7 @@ so future engineers understand the enterprise network design.
 
 ✔ Connectivity validated
 
-⬜ Documentation updated
+✔ Documentation updated
 
 ---
 
