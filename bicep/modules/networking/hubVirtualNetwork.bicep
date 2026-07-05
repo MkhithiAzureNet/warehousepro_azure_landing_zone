@@ -1,0 +1,64 @@
+////////////////////////////////////////////////////////////
+// Project     : WarehousePro Logistics
+// Sprint      : 03
+// Module      : Hub Virtual Network
+// Version     : 1.0
+// Author      : Nhlanhla M
+// Description : Deploys the Enterprise Hub Virtual Network
+////////////////////////////////////////////////////////////
+
+targetScope = 'resourceGroup'
+
+////////////////////////////////////////////////////////////
+// MODULE INFORMATION
+////////////////////////////////////////////////////////////
+
+// Scope      : Resource Group
+// Depends On : resourceGroups.bicep
+// Deploys    : Hub Virtual Network
+// Returns    : Hub Virtual Network ID
+
+////////////////////////////////////////////////////////////
+// PARAMETERS
+////////////////////////////////////////////////////////////
+
+@description('Deployment location')
+param location string
+
+@description('Environment name')
+param environment string
+
+////////////////////////////////////////////////////////////
+// VARIABLES
+////////////////////////////////////////////////////////////
+
+var hubVirtualNetworkName = 'VNET-Hub-${environment}'
+
+var hubAddressSpace = '10.0.0.0/16'
+
+////////////////////////////////////////////////////////////
+// RESOURCES
+////////////////////////////////////////////////////////////
+
+resource hubVirtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
+  name: hubVirtualNetworkName
+  location: location
+
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        hubAddressSpace
+      ]
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////
+// OUTPUTS
+////////////////////////////////////////////////////////////
+
+@description('Hub Virtual Network Resource ID')
+output hubVirtualNetworkId string = hubVirtualNetwork.id
+
+@description('Hub Virtual Network Name')
+output hubVirtualNetworkName string = hubVirtualNetwork.name
