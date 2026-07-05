@@ -29,8 +29,10 @@ param location string
 param environment string
 
 ////////////////////////////////////////////////////////////
-// MODULES
+// STAGE 1 - FOUNDATION
 ////////////////////////////////////////////////////////////
+
+// Creates the enterprise resource groups.
 
 module resourceGroups './modules/foundation/resourceGroups.bicep' = {
   name: 'resourceGroupsDeployment'
@@ -56,6 +58,9 @@ module resourceGroups './modules/foundation/resourceGroups.bicep' = {
 ////////////////////////////////////////////////////////////
 // STAGE 2 - NETWORKING
 ////////////////////////////////////////////////////////////
+
+// Creates the Hub Virtual Network.
+
 module hubVirtualNetwork './modules/networking/hubVirtualNetwork.bicep' = {
   name: 'hubVirtualNetworkDeployment'
 
@@ -65,4 +70,17 @@ module hubVirtualNetwork './modules/networking/hubVirtualNetwork.bicep' = {
     location: location
     environment: environment
   }
+}
+
+// Creates the Hub subnets.
+
+module hubSubnets './modules/networking/hubSubnets.bicep' = {
+    name: 'hubSubnetsDeployment'
+
+    scope: resourceGroup('RG-Networking-${environment}')
+
+    params: {
+        location: location
+        environment: environment
+    }
 }
