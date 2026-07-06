@@ -11,8 +11,8 @@ The environment is built using:
 - Azure Portal
 - Azure CLI
 - Azure PowerShell
-- Bicep (Sprint 7)
-- Terraform (Sprint 8)
+- Bicep
+- Terraform
 
 The goal is to simulate a real production Azure environment suitable for a medium-sized enterprise.
 
