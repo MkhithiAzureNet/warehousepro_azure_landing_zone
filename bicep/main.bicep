@@ -84,3 +84,48 @@ module hubSubnets './modules/networking/hubSubnets.bicep' = {
         environment: environment
     }
 }
+
+// Creates the Johannesburg Spoke Virtual Network.
+
+module spokeVirtualNetworkJHB './modules/networking/spokeVirtualNetworks.bicep' = {
+  name: 'spokeVirtualNetworkJHBDeployment'
+
+  scope: resourceGroup('RG-WH-JHB-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'JHB'
+    addressSpace: '10.1.0.0/16'
+  }
+}
+
+// Creates the Durban Spoke Virtual Network.
+
+module spokeVirtualNetworkDBN './modules/networking/spokeVirtualNetworks.bicep' = {
+  name: 'spokeVirtualNetworkDBNDeployment'
+
+  scope: resourceGroup('RG-WH-DBN-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'DBN'
+    addressSpace: '10.2.0.0/16'
+  }
+}
+
+// Creates the Cape Town Spoke Virtual Network.
+
+module spokeVirtualNetworkCPT './modules/networking/spokeVirtualNetworks.bicep' = {
+  name: 'spokeVirtualNetworkCPTDeployment'
+
+  scope: resourceGroup('RG-WH-CPT-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'CPT'
+    addressSpace: '10.3.0.0/16'
+  }
+}
