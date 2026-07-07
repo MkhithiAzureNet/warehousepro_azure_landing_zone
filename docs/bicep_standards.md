@@ -197,6 +197,32 @@ Every module should:
 
 ---
 
+## Module Granularity
+
+Modules should deploy a single logical resource or capability.
+
+Avoid designing modules that deploy multiple independent resources when orchestration can be performed by `main.bicep`.
+
+This improves:
+
+- Reusability
+- Maintainability
+- Scalability
+- Testing
+- Deployment flexibility
+
+---
+
+## Configuration Ownership
+
+Business-specific configuration should remain in the orchestration layer (`main.bicep` or parameter files).
+
+Reusable modules should accept parameters rather than hard-coded values.
+
+This keeps modules generic and reusable across multiple environments and projects.
+
+---
+
 # Documentation
 
 Every module should contain sufficient comments to explain:
@@ -261,6 +287,22 @@ Every module must satisfy the following before being committed.
 - Deployment committed to Git.
 
 ---
+
+# Incremental Delivery
+
+WarehousePro adopts an incremental delivery approach.
+
+Each module is completed independently using the following lifecycle:
+
+1. Design
+2. Implement
+3. Build
+4. Deploy
+5. Validate
+6. Document
+7. Commit
+
+This minimizes deployment risk and simplifies troubleshooting by validating each architectural component before progressing to the next.
 
 # Module Development Workflow
 
