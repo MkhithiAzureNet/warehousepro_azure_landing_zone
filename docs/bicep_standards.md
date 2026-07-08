@@ -46,7 +46,7 @@ bicep/
 Every Bicep module must follow the same structure.
 
 ```
-Project Header
+Header
 
 Target Scope
 
@@ -55,6 +55,8 @@ Module Information
 Parameters
 
 Variables
+
+Existing Resources
 
 Resources
 
@@ -288,31 +290,17 @@ Every module must satisfy the following before being committed.
 
 ---
 
-# Incremental Delivery
+# Module Delivery Workflow
 
-WarehousePro adopts an incremental delivery approach.
-
-Each module is completed independently using the following lifecycle:
+Every Bicep module follows the same delivery lifecycle.
 
 1. Design
 2. Implement
 3. Build
 4. Deploy
 5. Validate
-6. Document
-7. Commit
+6. Capture deployment evidence
+7. Update documentation
+8. Commit to Git
 
-This minimizes deployment risk and simplifies troubleshooting by validating each architectural component before progressing to the next.
-
-# Module Development Workflow
-
-Every module follows the same lifecycle.
-
-1. Create module.
-2. Add module documentation.
-3. Build Bicep.
-4. Deploy using main.bicep.
-5. Validate Azure resources.
-6. Capture screenshots.
-7. Commit to Git.
-8. Update sprint documentation.
+This incremental approach minimizes deployment risk and simplifies troubleshooting by validating each module before progressing to the next.
