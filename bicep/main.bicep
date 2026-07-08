@@ -122,6 +122,8 @@ module spokeVirtualNetworkCPT './modules/networking/spokeVirtualNetworks.bicep' 
 
   scope: resourceGroup('RG-WH-CPT-${environment}')
 
+  
+
   params: {
     location: location
     environment: environment
@@ -137,11 +139,16 @@ module workloadSubnetJHB './modules/networking/workloadSubnets.bicep' = {
 
   scope: resourceGroup('RG-WH-JHB-${environment}')
 
+   dependsOn: [
+    spokeVirtualNetworkJHB
+  ]
+
   params: {
     location: location
     environment: environment
     site: 'JHB'
     subnetPrefix: '10.1.1.0/24'
+    routeTableId: routeTableJHB.outputs.routeTableId
   }
 }
 
@@ -152,11 +159,16 @@ module workloadSubnetDBN './modules/networking/workloadSubnets.bicep' = {
 
   scope: resourceGroup('RG-WH-DBN-${environment}')
 
+  dependsOn: [
+    spokeVirtualNetworkDBN
+]
+
   params: {
     location: location
     environment: environment
     site: 'DBN'
     subnetPrefix: '10.2.1.0/24'
+    routeTableId: routeTableDBN.outputs.routeTableId
   }
 }
 
@@ -167,10 +179,58 @@ module workloadSubnetCPT './modules/networking/workloadSubnets.bicep' = {
 
   scope: resourceGroup('RG-WH-CPT-${environment}')
 
+  dependsOn: [
+    spokeVirtualNetworkCPT
+]
+
   params: {
     location: location
     environment: environment
     site: 'CPT'
     subnetPrefix: '10.3.1.0/24'
+    routeTableId: routeTableCPT.outputs.routeTableId
   }
 }
+
+// Creates the Johannesburg Route Table.
+
+module routeTableJHB './modules/networking/routeTables.bicep' = {
+  name: 'routeTableJHBDeployment'
+
+  scope: resourceGroup('RG-WH-JHB-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'JHB'
+  }
+}
+
+// Creates the Durban Route Table.
+
+module routeTableDBN './modules/networking/routeTables.bicep' = {
+  name: 'routeTableDBNDeployment'
+
+  scope: resourceGroup('RG-WH-DBN-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'DBN'
+  }
+}
+
+// Creates the Cape Town Route Table.
+
+module routeTableCPT './modules/networking/routeTables.bicep' = {
+  name: 'routeTableCPTDeployment'
+
+  scope: resourceGroup('RG-WH-CPT-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'CPT'
+  }
+}
+

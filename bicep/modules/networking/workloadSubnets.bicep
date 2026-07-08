@@ -34,6 +34,9 @@ param site string
 @description('Subnet address prefix')
 param subnetPrefix string
 
+@description('Route Table Resource ID')
+param routeTableId string
+
 ////////////////////////////////////////////////////////////
 // VARIABLES
 ////////////////////////////////////////////////////////////
@@ -61,6 +64,10 @@ resource workloadSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' =
 
   properties: {
     addressPrefix: subnetPrefix
+
+   routeTable: {
+    id: routeTableId
+}
   }
 }
 
