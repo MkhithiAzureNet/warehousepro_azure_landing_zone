@@ -129,3 +129,48 @@ module spokeVirtualNetworkCPT './modules/networking/spokeVirtualNetworks.bicep' 
     addressSpace: '10.3.0.0/16'
   }
 }
+
+// Creates the Johannesburg Workload Subnet.
+
+module workloadSubnetJHB './modules/networking/workloadSubnets.bicep' = {
+  name: 'workloadSubnetJHBDeployment'
+
+  scope: resourceGroup('RG-WH-JHB-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'JHB'
+    subnetPrefix: '10.1.1.0/24'
+  }
+}
+
+// Creates the Durban Workload Subnet.
+
+module workloadSubnetDBN './modules/networking/workloadSubnets.bicep' = {
+  name: 'workloadSubnetDBNDeployment'
+
+  scope: resourceGroup('RG-WH-DBN-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'DBN'
+    subnetPrefix: '10.2.1.0/24'
+  }
+}
+
+// Creates the Cape Town Workload Subnet.
+
+module workloadSubnetCPT './modules/networking/workloadSubnets.bicep' = {
+  name: 'workloadSubnetCPTDeployment'
+
+  scope: resourceGroup('RG-WH-CPT-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'CPT'
+    subnetPrefix: '10.3.1.0/24'
+  }
+}
