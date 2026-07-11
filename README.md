@@ -31,9 +31,9 @@ Sprint 1 ✅ Foundation
 
 Sprint 2 ✅ Enterprise Networking
 
-Sprint 3 🔄 Bicep
+Sprint 3 ✅ Bicep
 
-Sprint 4 ⏳ Security
+Sprint 4 🔄 Security
 
 Sprint 5 ⏳ Monitoring
 
