@@ -57,8 +57,8 @@ resource hubVirtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
 // OUTPUTS
 ////////////////////////////////////////////////////////////
 
-@description('Hub Virtual Network Resource ID')
-output hubVirtualNetworkId string = hubVirtualNetwork.id
+@description('Virtual Network Resource ID')
+output virtualNetworkId string = hubVirtualNetwork.id
 
-@description('Hub Virtual Network Name')
-output hubVirtualNetworkName string = hubVirtualNetwork.name
+@description('Virtual Network Name')
+output virtualNetworkName string = hubVirtualNetwork.name

@@ -63,8 +63,8 @@ resource spokeVirtualNetwork 'Microsoft.Network/virtualNetworks@2024-05-01' = {
 // OUTPUTS
 ////////////////////////////////////////////////////////////
 
-@description('Spoke Virtual Network ID')
-output spokeVirtualNetworkId string = spokeVirtualNetwork.id
+@description('Virtual Network Resource ID')
+output virtualNetworkId string = spokeVirtualNetwork.id
 
-@description('Spoke Virtual Network Name')
-output spokeVirtualNetworkName string = spokeVirtualNetwork.name
+@description('Virtual Network Name')
+output virtualNetworkName string = spokeVirtualNetwork.name

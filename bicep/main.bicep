@@ -234,3 +234,118 @@ module routeTableCPT './modules/networking/routeTables.bicep' = {
   }
 }
 
+// Creates Hub to Johannesburg Virtual Network Peering.
+
+module hubToJHBPeering './modules/networking/vnetPeerings.bicep' = {
+  name: 'hubToJHBPeeringDeployment'
+
+  scope: resourceGroup('RG-Networking-${environment}')
+
+  dependsOn: [
+  hubVirtualNetwork
+  spokeVirtualNetworkJHB
+]
+
+  params: {
+    localVirtualNetworkName: 'VNET-Hub-${environment}'
+    remoteVirtualNetworkId: spokeVirtualNetworkJHB.outputs.virtualNetworkId
+    peeringName: 'Hub-To-JHB'
+  }
+}
+
+// Creates Johannesburg to Hub Virtual Network Peering.
+
+module jhbToHubPeering './modules/networking/vnetPeerings.bicep' = {
+  name: 'jhbToHubPeeringDeployment'
+
+  scope: resourceGroup('RG-WH-JHB-${environment}')
+
+  dependsOn: [
+  hubVirtualNetwork
+  spokeVirtualNetworkJHB
+]
+
+  params: {
+    localVirtualNetworkName: 'VNET-WH-JHB-${environment}'
+    remoteVirtualNetworkId: hubVirtualNetwork.outputs.virtualNetworkId
+    peeringName: 'JHB-To-Hub'
+  }
+}
+
+// Creates Hub to Durban Virtual Network Peering.
+
+module hubToDBNPeering './modules/networking/vnetPeerings.bicep' = {
+  name: 'hubToDBNPeeringDeployment'
+
+  scope: resourceGroup('RG-Networking-${environment}')
+
+  dependsOn: [
+  hubVirtualNetwork
+  spokeVirtualNetworkDBN
+]
+
+  params: {
+    localVirtualNetworkName: 'VNET-Hub-${environment}'
+    remoteVirtualNetworkId: spokeVirtualNetworkDBN.outputs.virtualNetworkId
+    peeringName: 'Hub-To-DBN'
+  }
+}
+
+// Creates Durban to Hub Virtual Network Peering.
+
+module dbnToHubPeering './modules/networking/vnetPeerings.bicep' = {
+  name: 'dbnToHubPeeringDeployment'
+
+  scope: resourceGroup('RG-WH-DBN-${environment}')
+
+  dependsOn: [
+  hubVirtualNetwork
+  spokeVirtualNetworkDBN
+]
+
+  params: {
+    localVirtualNetworkName: 'VNET-WH-DBN-${environment}'
+    remoteVirtualNetworkId: hubVirtualNetwork.outputs.virtualNetworkId
+    peeringName: 'DBN-To-Hub'
+  }
+}
+
+// Creates Hub to Cape Town Virtual Network Peering.
+
+module hubToCPTPeering './modules/networking/vnetPeerings.bicep' = {
+  name: 'hubToCPTPeeringDeployment'
+
+  scope: resourceGroup('RG-Networking-${environment}')
+
+  dependsOn: [
+  hubVirtualNetwork
+  spokeVirtualNetworkCPT
+]
+
+  params: {
+    localVirtualNetworkName: 'VNET-Hub-${environment}'
+    remoteVirtualNetworkId: spokeVirtualNetworkCPT.outputs.virtualNetworkId
+    peeringName: 'Hub-To-CPT'
+  }
+}
+
+// Creates Cape Town to Hub Virtual Network Peering.
+
+module cptToHubPeering './modules/networking/vnetPeerings.bicep' = {
+  name: 'cptToHubPeeringDeployment'
+
+  scope: resourceGroup('RG-WH-CPT-${environment}')
+
+    dependsOn: [
+  hubVirtualNetwork
+  spokeVirtualNetworkCPT
+]
+
+  params: {
+    localVirtualNetworkName: 'VNET-WH-CPT-${environment}'
+    remoteVirtualNetworkId: hubVirtualNetwork.outputs.virtualNetworkId
+    peeringName: 'CPT-To-Hub'
+  }
+}
+
+
