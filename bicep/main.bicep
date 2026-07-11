@@ -241,11 +241,6 @@ module hubToJHBPeering './modules/networking/vnetPeerings.bicep' = {
 
   scope: resourceGroup('RG-Networking-${environment}')
 
-  dependsOn: [
-  hubVirtualNetwork
-  spokeVirtualNetworkJHB
-]
-
   params: {
     localVirtualNetworkName: 'VNET-Hub-${environment}'
     remoteVirtualNetworkId: spokeVirtualNetworkJHB.outputs.virtualNetworkId
@@ -260,11 +255,6 @@ module jhbToHubPeering './modules/networking/vnetPeerings.bicep' = {
 
   scope: resourceGroup('RG-WH-JHB-${environment}')
 
-  dependsOn: [
-  hubVirtualNetwork
-  spokeVirtualNetworkJHB
-]
-
   params: {
     localVirtualNetworkName: 'VNET-WH-JHB-${environment}'
     remoteVirtualNetworkId: hubVirtualNetwork.outputs.virtualNetworkId
@@ -278,11 +268,6 @@ module hubToDBNPeering './modules/networking/vnetPeerings.bicep' = {
   name: 'hubToDBNPeeringDeployment'
 
   scope: resourceGroup('RG-Networking-${environment}')
-
-  dependsOn: [
-  hubVirtualNetwork
-  spokeVirtualNetworkDBN
-]
 
   params: {
     localVirtualNetworkName: 'VNET-Hub-${environment}'
@@ -299,7 +284,6 @@ module dbnToHubPeering './modules/networking/vnetPeerings.bicep' = {
   scope: resourceGroup('RG-WH-DBN-${environment}')
 
   dependsOn: [
-  hubVirtualNetwork
   spokeVirtualNetworkDBN
 ]
 
@@ -317,11 +301,6 @@ module hubToCPTPeering './modules/networking/vnetPeerings.bicep' = {
 
   scope: resourceGroup('RG-Networking-${environment}')
 
-  dependsOn: [
-  hubVirtualNetwork
-  spokeVirtualNetworkCPT
-]
-
   params: {
     localVirtualNetworkName: 'VNET-Hub-${environment}'
     remoteVirtualNetworkId: spokeVirtualNetworkCPT.outputs.virtualNetworkId
@@ -336,15 +315,56 @@ module cptToHubPeering './modules/networking/vnetPeerings.bicep' = {
 
   scope: resourceGroup('RG-WH-CPT-${environment}')
 
-    dependsOn: [
-  hubVirtualNetwork
-  spokeVirtualNetworkCPT
-]
+  dependsOn: [
+    spokeVirtualNetworkCPT
+  ]
 
   params: {
     localVirtualNetworkName: 'VNET-WH-CPT-${environment}'
     remoteVirtualNetworkId: hubVirtualNetwork.outputs.virtualNetworkId
     peeringName: 'CPT-To-Hub'
+  }
+}
+
+// Creates the Johannesburg Network Security Group.
+
+module networkSecurityGroupJHB './modules/security/networkSecurityGroups.bicep' = {
+  name: 'networkSecurityGroupJHBDeployment'
+
+  scope: resourceGroup('RG-WH-JHB-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'JHB'
+  }
+}
+
+// Creates the Durban Network Security Group.
+
+module networkSecurityGroupDBN './modules/security/networkSecurityGroups.bicep' = {
+  name: 'networkSecurityGroupDBNDeployment'
+
+  scope: resourceGroup('RG-WH-DBN-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'DBN'
+  }
+}
+
+// Creates the Cape Town Network Security Group.
+
+module networkSecurityGroupCPT './modules/security/networkSecurityGroups.bicep' = {
+  name: 'networkSecurityGroupCPTDeployment'
+
+  scope: resourceGroup('RG-WH-CPT-${environment}')
+
+  params: {
+    location: location
+    environment: environment
+    site: 'CPT'
   }
 }
 

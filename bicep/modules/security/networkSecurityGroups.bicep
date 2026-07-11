@@ -1,0 +1,58 @@
+////////////////////////////////////////////////////////////
+// Project     : WarehousePro Logistics
+// Sprint      : 03
+// Module      : Network Security Groups
+// Version     : 1.0
+// Author      : Nhlanhla M
+// Description : Deploys Regional Network Security Groups
+////////////////////////////////////////////////////////////
+
+targetScope = 'resourceGroup'
+
+////////////////////////////////////////////////////////////
+// MODULE INFORMATION
+////////////////////////////////////////////////////////////
+
+// Scope      : Resource Group
+// Depends On : Resource Groups
+// Deploys    : Network Security Group
+// Returns    : Network Security Group Resource ID
+
+////////////////////////////////////////////////////////////
+// PARAMETERS
+////////////////////////////////////////////////////////////
+
+@description('Deployment location')
+param location string
+
+@description('Environment name')
+param environment string
+
+@description('Regional warehouse site')
+param site string
+
+////////////////////////////////////////////////////////////
+// VARIABLES
+////////////////////////////////////////////////////////////
+
+var networkSecurityGroupName = 'NSG-WH-${site}-${environment}'
+
+////////////////////////////////////////////////////////////
+// RESOURCES
+////////////////////////////////////////////////////////////
+
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2024-05-01' = {
+  name: networkSecurityGroupName
+
+  location: location
+}
+
+////////////////////////////////////////////////////////////
+// OUTPUTS
+////////////////////////////////////////////////////////////
+
+@description('Network Security Group Resource ID')
+output networkSecurityGroupId string = networkSecurityGroup.id
+
+@description('Network Security Group Name')
+output networkSecurityGroupName string = networkSecurityGroup.name
