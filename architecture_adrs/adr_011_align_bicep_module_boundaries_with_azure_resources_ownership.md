@@ -153,6 +153,5 @@ The Bicep implementation is intentionally optimized for declarative Infrastructu
 # Related Documents
 
 - ADR-001 – Architecture First Development
-- ADR-003 – Modular Infrastructure Design
 - WarehousePro Azure Bicep Standards
 - Sprint 03 Roadmap
