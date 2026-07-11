@@ -261,6 +261,24 @@ The solution is designed to support future expansion using Azure Bicep, Terrafor
 
 Outputs should only expose information that is useful to other modules or deployment reporting.
 
+---
+
+## Consistent Module Interfaces
+
+Modules deploying the same Azure resource type should expose consistent output names.
+
+This allows modules to be composed interchangeably by `main.bicep`.
+
+Example:
+
+```bicep
+output virtualNetworkId string = virtualNetwork.id
+
+output virtualNetworkName string = virtualNetwork.name
+```
+
+Avoid embedding resource roles (Hub, Spoke, etc.) in output names when the module context already identifies the resource.
+
 ## Guidelines
 
 - Return Resource IDs when another module references the resource.
