@@ -37,7 +37,7 @@ Infrastructure Team
 
 WarehousePro Logistics is undertaking a phased migration from its on-premises datacenter to Microsoft Azure.
 
-The business currently operates multiple warehouses distributed across South Africa, with plans to acquire additional warehouses over the next two years.
+The business currently operates multiple warehouses distributed across South Africa, with plans to acquire additional warehouses over the next five years.
 
 Each warehouse requires secure connectivity to Azure-hosted applications while maintaining isolation between business units and allowing centralized management of shared network services.
 
