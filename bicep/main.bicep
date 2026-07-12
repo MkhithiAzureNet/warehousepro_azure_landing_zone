@@ -47,7 +47,53 @@ module resourceGroups './modules/foundation/resourceGroups.bicep' = {
 // VARIABLES
 ////////////////////////////////////////////////////////////
 
-// None required
+// Security rule definitions for workload subnet Network Security Groups.
+
+////////////////////////////////////////////////////////////
+// SECURITY CONFIGURATION
+////////////////////////////////////////////////////////////
+var workloadSubnetSecurityRules = [
+
+  {
+    name: 'Allow-AzureLoadBalancer'
+
+    priority: 110
+
+    direction: 'Inbound'
+
+    access: 'Allow'
+
+    protocol: '*'
+
+    sourcePortRange: '*'
+
+    destinationPortRange: '*'
+
+    sourceAddressPrefix: 'AzureLoadBalancer'
+
+    destinationAddressPrefix: '*'
+  }
+
+  {
+    name: 'Deny-Internet'
+
+    priority: 4096
+
+    direction: 'Inbound'
+
+    access: 'Deny'
+
+    protocol: '*'
+
+    sourcePortRange: '*'
+
+    destinationPortRange: '*'
+
+    sourceAddressPrefix: 'Internet'
+
+    destinationAddressPrefix: '*'
+  }
+]
 
 ////////////////////////////////////////////////////////////
 // OUTPUTS
@@ -365,6 +411,58 @@ module networkSecurityGroupCPT './modules/security/networkSecurityGroups.bicep' 
     location: location
     environment: environment
     site: 'CPT'
+  }
+}
+
+////////////////////////////////////////////////////////////
+// STAGE 3 - NETWORK SECURITY
+////////////////////////////////////////////////////////////
+
+// Creates Johannesburg Network Security Rules.
+
+module networkSecurityRulesJHB './modules/security/networkSecurityRules.bicep' = {
+  name: 'networkSecurityRulesJHBDeployment'
+
+  scope: resourceGroup('RG-WH-JHB-${environment}')
+
+  params: {
+    environment: environment
+
+    site: 'JHB'
+
+    securityRules: workloadSubnetSecurityRules
+  }
+}
+
+// Creates Durban Network Security Rules.
+
+module networkSecurityRulesDBN './modules/security/networkSecurityRules.bicep' = {
+  name: 'networkSecurityRulesDBNDeployment'
+
+  scope: resourceGroup('RG-WH-DBN-${environment}')
+
+  params: {
+    environment: environment
+
+    site: 'DBN'
+
+    securityRules: workloadSubnetSecurityRules
+  }
+}
+
+// Creates Cape Town Network Security Rules.
+
+module networkSecurityRulesCPT './modules/security/networkSecurityRules.bicep' = {
+  name: 'networkSecurityRulesCPTDeployment'
+
+  scope: resourceGroup('RG-WH-CPT-${environment}')
+
+  params: {
+    environment: environment
+
+    site: 'CPT'
+
+    securityRules: workloadSubnetSecurityRules
   }
 }
 
