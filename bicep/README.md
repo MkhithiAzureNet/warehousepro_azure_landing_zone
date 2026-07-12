@@ -121,12 +121,6 @@ bicep/
 
 - Hub Virtual Network Module
 
-### In Progress
-
-- Hub Subnets Module
-
-### Planned
-
 - Regional Spoke Networks
 
 - Workload Subnets
@@ -136,6 +130,10 @@ bicep/
 - Network Security Groups
 
 - VNet Peerings
+
+### In Progress
+
+- Completed
 
 ---
 
