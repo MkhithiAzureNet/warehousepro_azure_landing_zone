@@ -136,20 +136,3 @@ so that Infrastructure as Code deployments can be verified automatically.
 
 ✔ Documentation updated
 
----
-
-## Definition of Done
-
-- Modular Azure Bicep solution complete
-
-- Infrastructure deployed successfully
-
-- Validation completed
-
-- Documentation committed
-
-- Screenshots captured
-
-- README updated
-
-- Git repository updated
