@@ -112,6 +112,10 @@ module hubVirtualNetwork './modules/networking/hubVirtualNetwork.bicep' = {
 
   scope: resourceGroup('RG-Networking-${environment}')
 
+  dependsOn: [
+    resourceGroups
+  ]
+
   params: {
     location: location
     environment: environment
@@ -121,14 +125,19 @@ module hubVirtualNetwork './modules/networking/hubVirtualNetwork.bicep' = {
 // Creates the Hub subnets.
 
 module hubSubnets './modules/networking/hubSubnets.bicep' = {
-    name: 'hubSubnetsDeployment'
+  name: 'hubSubnetsDeployment'
 
-    scope: resourceGroup('RG-Networking-${environment}')
+  scope: resourceGroup('RG-Networking-${environment}')
 
-    params: {
-        location: location
-        environment: environment
-    }
+  dependsOn: [
+    resourceGroups
+    hubVirtualNetwork
+  ]
+
+  params: {
+    location: location
+    environment: environment
+  }
 }
 
 // Creates the Johannesburg Spoke Virtual Network.
@@ -137,6 +146,10 @@ module spokeVirtualNetworkJHB './modules/networking/spokeVirtualNetworks.bicep' 
   name: 'spokeVirtualNetworkJHBDeployment'
 
   scope: resourceGroup('RG-WH-JHB-${environment}')
+
+  dependsOn: [
+  resourceGroups
+]
 
   params: {
     location: location
@@ -153,6 +166,10 @@ module spokeVirtualNetworkDBN './modules/networking/spokeVirtualNetworks.bicep' 
 
   scope: resourceGroup('RG-WH-DBN-${environment}')
 
+  dependsOn: [
+  resourceGroups
+]
+
   params: {
     location: location
     environment: environment
@@ -168,7 +185,9 @@ module spokeVirtualNetworkCPT './modules/networking/spokeVirtualNetworks.bicep' 
 
   scope: resourceGroup('RG-WH-CPT-${environment}')
 
-  
+  dependsOn: [
+  resourceGroups
+]
 
   params: {
     location: location
@@ -186,6 +205,7 @@ module workloadSubnetJHB './modules/networking/workloadSubnets.bicep' = {
   scope: resourceGroup('RG-WH-JHB-${environment}')
 
    dependsOn: [
+    resourceGroups
     spokeVirtualNetworkJHB
   ]
 
@@ -206,6 +226,7 @@ module workloadSubnetDBN './modules/networking/workloadSubnets.bicep' = {
   scope: resourceGroup('RG-WH-DBN-${environment}')
 
   dependsOn: [
+    resourceGroups
     spokeVirtualNetworkDBN
 ]
 
@@ -226,6 +247,7 @@ module workloadSubnetCPT './modules/networking/workloadSubnets.bicep' = {
   scope: resourceGroup('RG-WH-CPT-${environment}')
 
   dependsOn: [
+    resourceGroups
     spokeVirtualNetworkCPT
 ]
 
@@ -379,6 +401,10 @@ module networkSecurityGroupJHB './modules/security/networkSecurityGroups.bicep' 
 
   scope: resourceGroup('RG-WH-JHB-${environment}')
 
+  dependsOn: [
+  resourceGroups
+]
+
   params: {
     location: location
     environment: environment
@@ -393,6 +419,10 @@ module networkSecurityGroupDBN './modules/security/networkSecurityGroups.bicep' 
 
   scope: resourceGroup('RG-WH-DBN-${environment}')
 
+  dependsOn: [
+  resourceGroups
+]
+
   params: {
     location: location
     environment: environment
@@ -406,6 +436,10 @@ module networkSecurityGroupCPT './modules/security/networkSecurityGroups.bicep' 
   name: 'networkSecurityGroupCPTDeployment'
 
   scope: resourceGroup('RG-WH-CPT-${environment}')
+
+  dependsOn: [
+  resourceGroups
+]
 
   params: {
     location: location
@@ -425,6 +459,11 @@ module networkSecurityRulesJHB './modules/security/networkSecurityRules.bicep' =
 
   scope: resourceGroup('RG-WH-JHB-${environment}')
 
+  dependsOn: [
+  resourceGroups
+  networkSecurityGroupJHB
+]
+
   params: {
     environment: environment
 
@@ -441,6 +480,11 @@ module networkSecurityRulesDBN './modules/security/networkSecurityRules.bicep' =
 
   scope: resourceGroup('RG-WH-DBN-${environment}')
 
+  dependsOn: [
+    resourceGroups
+    networkSecurityGroupDBN
+  ]
+
   params: {
     environment: environment
 
@@ -456,6 +500,11 @@ module networkSecurityRulesCPT './modules/security/networkSecurityRules.bicep' =
   name: 'networkSecurityRulesCPTDeployment'
 
   scope: resourceGroup('RG-WH-CPT-${environment}')
+
+  dependsOn: [
+    resourceGroups
+    networkSecurityGroupCPT
+  ]
 
   params: {
     environment: environment
