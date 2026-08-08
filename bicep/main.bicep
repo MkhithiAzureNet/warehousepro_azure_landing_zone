@@ -29,18 +29,47 @@ param location string
 param environment string
 
 ////////////////////////////////////////////////////////////
-// STAGE 1 - FOUNDATION
+// RESOURCE GROUPS
 ////////////////////////////////////////////////////////////
 
-// Creates the enterprise resource groups.
+resource rgNetworking 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: 'RG-Networking-${environment}'
+  location: location
+}
 
-module resourceGroups './modules/foundation/resourceGroups.bicep' = {
-  name: 'resourceGroupsDeployment'
+resource rgIdentity 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: 'RG-Identity-${environment}'
+  location: location
+}
 
-  params: {
-    location: location
-    environment: environment
-  }
+resource rgManagement 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: 'RG-Management-${environment}'
+  location: location
+}
+
+resource rgMonitoring 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: 'RG-Monitoring-${environment}'
+  location: location
+}
+
+resource rgSharedServices 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: 'RG-SharedServices-${environment}'
+  location: location
+}
+
+resource rgWHJHB 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: 'RG-WH-JHB-${environment}'
+  location: location
+}
+
+resource rgWHDBN 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: 'RG-WH-DBN-${environment}'
+  location: location
+}
+
+resource rgWHCPT 'Microsoft.Resources/resourceGroups@2024-11-01' = {
+  name: 'RG-WH-CPT-${environment}'
+  location: location
 }
 
 ////////////////////////////////////////////////////////////
@@ -110,11 +139,7 @@ var workloadSubnetSecurityRules = [
 module hubVirtualNetwork './modules/networking/hubVirtualNetwork.bicep' = {
   name: 'hubVirtualNetworkDeployment'
 
-  scope: resourceGroup('RG-Networking-${environment}')
-
-  dependsOn: [
-    resourceGroups
-  ]
+  scope: rgNetworking
 
   params: {
     location: location
@@ -127,10 +152,9 @@ module hubVirtualNetwork './modules/networking/hubVirtualNetwork.bicep' = {
 module hubSubnets './modules/networking/hubSubnets.bicep' = {
   name: 'hubSubnetsDeployment'
 
-  scope: resourceGroup('RG-Networking-${environment}')
+  scope: rgNetworking
 
   dependsOn: [
-    resourceGroups
     hubVirtualNetwork
   ]
 
@@ -145,10 +169,10 @@ module hubSubnets './modules/networking/hubSubnets.bicep' = {
 module spokeVirtualNetworkJHB './modules/networking/spokeVirtualNetworks.bicep' = {
   name: 'spokeVirtualNetworkJHBDeployment'
 
-  scope: resourceGroup('RG-WH-JHB-${environment}')
+  scope: rgWHJHB
 
   dependsOn: [
-  resourceGroups
+  rgNetworking
 ]
 
   params: {
@@ -164,10 +188,10 @@ module spokeVirtualNetworkJHB './modules/networking/spokeVirtualNetworks.bicep' 
 module spokeVirtualNetworkDBN './modules/networking/spokeVirtualNetworks.bicep' = {
   name: 'spokeVirtualNetworkDBNDeployment'
 
-  scope: resourceGroup('RG-WH-DBN-${environment}')
+  scope: rgWHDBN
 
   dependsOn: [
-  resourceGroups
+  rgNetworking
 ]
 
   params: {
@@ -183,10 +207,10 @@ module spokeVirtualNetworkDBN './modules/networking/spokeVirtualNetworks.bicep' 
 module spokeVirtualNetworkCPT './modules/networking/spokeVirtualNetworks.bicep' = {
   name: 'spokeVirtualNetworkCPTDeployment'
 
-  scope: resourceGroup('RG-WH-CPT-${environment}')
+  scope: rgWHCPT
 
   dependsOn: [
-  resourceGroups
+  rgNetworking
 ]
 
   params: {
@@ -202,10 +226,10 @@ module spokeVirtualNetworkCPT './modules/networking/spokeVirtualNetworks.bicep' 
 module workloadSubnetJHB './modules/networking/workloadSubnets.bicep' = {
   name: 'workloadSubnetJHBDeployment'
 
-  scope: resourceGroup('RG-WH-JHB-${environment}')
+  scope: rgWHJHB
 
    dependsOn: [
-    resourceGroups
+    rgNetworking
     spokeVirtualNetworkJHB
   ]
 
@@ -223,10 +247,9 @@ module workloadSubnetJHB './modules/networking/workloadSubnets.bicep' = {
 module workloadSubnetDBN './modules/networking/workloadSubnets.bicep' = {
   name: 'workloadSubnetDBNDeployment'
 
-  scope: resourceGroup('RG-WH-DBN-${environment}')
+  scope: rgWHDBN
 
   dependsOn: [
-    resourceGroups
     spokeVirtualNetworkDBN
 ]
 
@@ -244,10 +267,9 @@ module workloadSubnetDBN './modules/networking/workloadSubnets.bicep' = {
 module workloadSubnetCPT './modules/networking/workloadSubnets.bicep' = {
   name: 'workloadSubnetCPTDeployment'
 
-  scope: resourceGroup('RG-WH-CPT-${environment}')
+  scope: rgWHCPT
 
   dependsOn: [
-    resourceGroups
     spokeVirtualNetworkCPT
 ]
 
@@ -265,7 +287,7 @@ module workloadSubnetCPT './modules/networking/workloadSubnets.bicep' = {
 module routeTableJHB './modules/networking/routeTables.bicep' = {
   name: 'routeTableJHBDeployment'
 
-  scope: resourceGroup('RG-WH-JHB-${environment}')
+  scope: rgWHJHB
 
   params: {
     location: location
@@ -279,7 +301,7 @@ module routeTableJHB './modules/networking/routeTables.bicep' = {
 module routeTableDBN './modules/networking/routeTables.bicep' = {
   name: 'routeTableDBNDeployment'
 
-  scope: resourceGroup('RG-WH-DBN-${environment}')
+  scope: rgWHDBN
 
   params: {
     location: location
@@ -293,7 +315,7 @@ module routeTableDBN './modules/networking/routeTables.bicep' = {
 module routeTableCPT './modules/networking/routeTables.bicep' = {
   name: 'routeTableCPTDeployment'
 
-  scope: resourceGroup('RG-WH-CPT-${environment}')
+  scope: rgWHCPT
 
   params: {
     location: location
@@ -307,7 +329,7 @@ module routeTableCPT './modules/networking/routeTables.bicep' = {
 module hubToJHBPeering './modules/networking/vnetPeerings.bicep' = {
   name: 'hubToJHBPeeringDeployment'
 
-  scope: resourceGroup('RG-Networking-${environment}')
+  scope: rgNetworking
 
   params: {
     localVirtualNetworkName: 'VNET-Hub-${environment}'
@@ -321,7 +343,7 @@ module hubToJHBPeering './modules/networking/vnetPeerings.bicep' = {
 module jhbToHubPeering './modules/networking/vnetPeerings.bicep' = {
   name: 'jhbToHubPeeringDeployment'
 
-  scope: resourceGroup('RG-WH-JHB-${environment}')
+  scope: rgWHJHB
 
   params: {
     localVirtualNetworkName: 'VNET-WH-JHB-${environment}'
@@ -335,7 +357,7 @@ module jhbToHubPeering './modules/networking/vnetPeerings.bicep' = {
 module hubToDBNPeering './modules/networking/vnetPeerings.bicep' = {
   name: 'hubToDBNPeeringDeployment'
 
-  scope: resourceGroup('RG-Networking-${environment}')
+  scope: rgNetworking
 
   params: {
     localVirtualNetworkName: 'VNET-Hub-${environment}'
@@ -349,7 +371,7 @@ module hubToDBNPeering './modules/networking/vnetPeerings.bicep' = {
 module dbnToHubPeering './modules/networking/vnetPeerings.bicep' = {
   name: 'dbnToHubPeeringDeployment'
 
-  scope: resourceGroup('RG-WH-DBN-${environment}')
+  scope: rgWHDBN
 
   dependsOn: [
   spokeVirtualNetworkDBN
@@ -367,7 +389,7 @@ module dbnToHubPeering './modules/networking/vnetPeerings.bicep' = {
 module hubToCPTPeering './modules/networking/vnetPeerings.bicep' = {
   name: 'hubToCPTPeeringDeployment'
 
-  scope: resourceGroup('RG-Networking-${environment}')
+  scope: rgNetworking
 
   params: {
     localVirtualNetworkName: 'VNET-Hub-${environment}'
@@ -381,7 +403,7 @@ module hubToCPTPeering './modules/networking/vnetPeerings.bicep' = {
 module cptToHubPeering './modules/networking/vnetPeerings.bicep' = {
   name: 'cptToHubPeeringDeployment'
 
-  scope: resourceGroup('RG-WH-CPT-${environment}')
+  scope: rgWHCPT
 
   dependsOn: [
     spokeVirtualNetworkCPT
@@ -399,11 +421,7 @@ module cptToHubPeering './modules/networking/vnetPeerings.bicep' = {
 module networkSecurityGroupJHB './modules/security/networkSecurityGroups.bicep' = {
   name: 'networkSecurityGroupJHBDeployment'
 
-  scope: resourceGroup('RG-WH-JHB-${environment}')
-
-  dependsOn: [
-  resourceGroups
-]
+  scope: rgWHJHB
 
   params: {
     location: location
@@ -417,11 +435,7 @@ module networkSecurityGroupJHB './modules/security/networkSecurityGroups.bicep' 
 module networkSecurityGroupDBN './modules/security/networkSecurityGroups.bicep' = {
   name: 'networkSecurityGroupDBNDeployment'
 
-  scope: resourceGroup('RG-WH-DBN-${environment}')
-
-  dependsOn: [
-  resourceGroups
-]
+  scope: rgWHDBN
 
   params: {
     location: location
@@ -435,11 +449,7 @@ module networkSecurityGroupDBN './modules/security/networkSecurityGroups.bicep' 
 module networkSecurityGroupCPT './modules/security/networkSecurityGroups.bicep' = {
   name: 'networkSecurityGroupCPTDeployment'
 
-  scope: resourceGroup('RG-WH-CPT-${environment}')
-
-  dependsOn: [
-  resourceGroups
-]
+  scope: rgWHCPT
 
   params: {
     location: location
@@ -457,10 +467,9 @@ module networkSecurityGroupCPT './modules/security/networkSecurityGroups.bicep' 
 module networkSecurityRulesJHB './modules/security/networkSecurityRules.bicep' = {
   name: 'networkSecurityRulesJHBDeployment'
 
-  scope: resourceGroup('RG-WH-JHB-${environment}')
+  scope: rgWHJHB
 
   dependsOn: [
-  resourceGroups
   networkSecurityGroupJHB
 ]
 
@@ -478,10 +487,9 @@ module networkSecurityRulesJHB './modules/security/networkSecurityRules.bicep' =
 module networkSecurityRulesDBN './modules/security/networkSecurityRules.bicep' = {
   name: 'networkSecurityRulesDBNDeployment'
 
-  scope: resourceGroup('RG-WH-DBN-${environment}')
+  scope: rgWHDBN
 
   dependsOn: [
-    resourceGroups
     networkSecurityGroupDBN
   ]
 
@@ -499,10 +507,9 @@ module networkSecurityRulesDBN './modules/security/networkSecurityRules.bicep' =
 module networkSecurityRulesCPT './modules/security/networkSecurityRules.bicep' = {
   name: 'networkSecurityRulesCPTDeployment'
 
-  scope: resourceGroup('RG-WH-CPT-${environment}')
+  scope: rgWHCPT
 
   dependsOn: [
-    resourceGroups
     networkSecurityGroupCPT
   ]
 
