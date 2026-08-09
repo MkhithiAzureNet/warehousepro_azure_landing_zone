@@ -299,3 +299,37 @@ Sprint 03 successfully delivered:
 The most important lesson from Sprint 03 was:
 
 > Enterprise Infrastructure as Code is not about getting a deployment to succeed once. It is about designing reusable, maintainable, well-documented infrastructure that can evolve as the platform grows.
+
+## Sprint 03 – Clean Subscription Deployment Validation
+
+During validation of the Azure Bicep implementation, the initial deployment failed when deployed into a clean Azure subscription.
+
+The Resource Groups were successfully created, but subsequent Bicep modules returned `ResourceGroupNotFound` errors.
+
+### Root Cause
+
+The initial Bicep orchestration created Resource Groups through a nested Resource Group module while other modules attempted to deploy into those Resource Groups using string-based `resourceGroup()` scopes.
+
+This created an orchestration dependency that was not correctly represented in the parent Bicep deployment.
+
+### Resolution
+
+Resource Groups were moved into the subscription-scoped `main.bicep` as explicit Resource Group resources.
+
+Child modules were then scoped directly to the corresponding Resource Group symbolic resources.
+
+For example:
+
+```bicep
+resource rgWHDBN 'Microsoft.Resources/resourceGroups@...' = {
+  name: 'RG-WH-DBN-${environment}'
+  location: location
+}
+
+module spokeVirtualNetworkDBN './modules/networking/spokeVirtualNetworks.bicep' = {
+  name: 'spokeVirtualNetworkDBNDeployment'
+
+  scope: rgWHDBN
+
+  ...
+}
