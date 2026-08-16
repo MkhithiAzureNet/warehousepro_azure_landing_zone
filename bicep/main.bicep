@@ -482,6 +482,23 @@ module networkSecurityGroupCPT './modules/security/networkSecurityGroups.bicep' 
 // STAGE 3 - NETWORK SECURITY
 ////////////////////////////////////////////////////////////
 
+// Creates Azure Firewall in the central Hub.
+
+module azureFirewall './modules/security/azureFirewall.bicep' = {
+  name: 'azureFirewallDeployment'
+
+  scope: rgNetworking
+
+  dependsOn: [
+    hubSubnets
+  ]
+
+  params: {
+    environment: environment
+    hubVnetName: 'VNET-Hub-${environment}'
+  }
+}
+
 // Creates Johannesburg Network Security Rules.
 
 module networkSecurityRulesJHB './modules/security/networkSecurityRules.bicep' = {
