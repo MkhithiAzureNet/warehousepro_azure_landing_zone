@@ -35,46 +35,66 @@ param environment string
 resource rgNetworking 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: 'RG-Networking-${environment}'
   location: location
+  tags: resourceTags
 }
 
 resource rgIdentity 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: 'RG-Identity-${environment}'
   location: location
+  tags: resourceTags
 }
 
 resource rgManagement 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: 'RG-Management-${environment}'
   location: location
+  tags: resourceTags
 }
 
 resource rgMonitoring 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: 'RG-Monitoring-${environment}'
   location: location
+  tags: resourceTags
 }
 
 resource rgSharedServices 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: 'RG-SharedServices-${environment}'
   location: location
+  tags: resourceTags
 }
 
 resource rgWHJHB 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: 'RG-WH-JHB-${environment}'
   location: location
+  tags: resourceTags
 }
 
 resource rgWHDBN 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: 'RG-WH-DBN-${environment}'
   location: location
+  tags: resourceTags
 }
 
 resource rgWHCPT 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: 'RG-WH-CPT-${environment}'
   location: location
+  tags: resourceTags
 }
 
 ////////////////////////////////////////////////////////////
 // VARIABLES
 ////////////////////////////////////////////////////////////
+
+var resourceTags = {
+  Environment: 'environment'
+  Project: 'WarehousePro'
+  Owner: 'Cloud Team'
+  Department: 'IT'
+  CostCenter: 'Infrastructure'
+  ManagedBy: 'AzureBicep'
+  BusinessUnit: 'Logistics'
+  Criticality: 'High'
+  Backup: 'Yes'
+}
 
 // Security rule definitions for workload subnet Network Security Groups.
 
