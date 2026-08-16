@@ -1,10 +1,10 @@
 ////////////////////////////////////////////////////////////
 // Project     : WarehousePro Logistics
-// Sprint      : 03
+// Sprint      : 04
 // Module      : Route Table
 // Version     : 1.0
 // Author      : Nhlanhla M
-// Description : Deploys a Regional Route Table
+// Description : Deploys a Regional Route Table with Azure Firewall routing
 ////////////////////////////////////////////////////////////
 
 targetScope = 'resourceGroup'
@@ -31,6 +31,9 @@ param environment string
 @description('Regional warehouse site')
 param site string
 
+@description('Azure Firewall private IP address')
+param firewallPrivateIp string
+
 ////////////////////////////////////////////////////////////
 // VARIABLES
 ////////////////////////////////////////////////////////////
@@ -45,6 +48,22 @@ resource routeTable 'Microsoft.Network/routeTables@2024-05-01' = {
   name: routeTableName
 
   location: location
+}
+
+////////////////////////////////////////////////////////////
+// AZURE FIREWALL DEFAULT ROUTE
+////////////////////////////////////////////////////////////
+
+resource defaultRoute 'Microsoft.Network/routeTables/routes@2024-05-01' = {
+  parent: routeTable
+
+  name: 'DefaultRouteToAzureFirewall'
+
+  properties: {
+    addressPrefix: '0.0.0.0/0'
+    nextHopType: 'VirtualAppliance'
+    nextHopIpAddress: firewallPrivateIp
+  }
 }
 
 ////////////////////////////////////////////////////////////

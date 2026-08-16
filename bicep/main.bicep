@@ -249,7 +249,6 @@ module workloadSubnetJHB './modules/networking/workloadSubnets.bicep' = {
   scope: rgWHJHB
 
    dependsOn: [
-    rgNetworking
     spokeVirtualNetworkJHB
   ]
 
@@ -313,6 +312,7 @@ module routeTableJHB './modules/networking/routeTables.bicep' = {
     location: location
     environment: environment
     site: 'JHB'
+    firewallPrivateIp: azureFirewall.outputs.firewallPrivateIp
   }
 }
 
@@ -327,6 +327,7 @@ module routeTableDBN './modules/networking/routeTables.bicep' = {
     location: location
     environment: environment
     site: 'DBN'
+    firewallPrivateIp: azureFirewall.outputs.firewallPrivateIp
   }
 }
 
@@ -341,6 +342,7 @@ module routeTableCPT './modules/networking/routeTables.bicep' = {
     location: location
     environment: environment
     site: 'CPT'
+    firewallPrivateIp: azureFirewall.outputs.firewallPrivateIp
   }
 }
 
