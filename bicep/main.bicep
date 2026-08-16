@@ -85,7 +85,7 @@ resource rgWHCPT 'Microsoft.Resources/resourceGroups@2024-11-01' = {
 ////////////////////////////////////////////////////////////
 
 var resourceTags = {
-  Environment: 'environment'
+  Environment: environment
   Project: 'WarehousePro'
   Owner: 'Cloud Team'
   Department: 'IT'
