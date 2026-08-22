@@ -179,7 +179,6 @@ module hubSubnets './modules/networking/hubSubnets.bicep' = {
   ]
 
   params: {
-    location: location
     environment: environment
   }
 }
