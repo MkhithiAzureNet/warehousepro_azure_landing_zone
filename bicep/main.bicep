@@ -583,19 +583,31 @@ resource sharedServicesSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05
   name: 'SharedServicesSubnet'
 }
 
-// // Creates a Private Endpoint for Azure PaaS services.
+// Creates a Private Endpoint for Azure PaaS services.
 
-// module privateEndpoint './modules/security/privateEndpoint.bicep' = {
-//   name: 'privateEndpointDeployment'
-//   scope: rgSharedServices
+module privateEndpoint './modules/security/privateEndpoint.bicep' = {
+  name: 'privateEndpointDeployment'
+  scope: rgSharedServices
 
-//   params: {
-//     location: location
-//     environment: environment
-//     subnetId: sharedServicesSubnet.id
-//     targetResourceId: ...
-//     groupId: ...
-//   }
-// }
+  params: {
+    location: location
+    subnetId: sharedServicesSubnet.id
+    targetResourceId: keyVault.outputs.keyVaultId
+    groupId: 'vault'
+    privateEndpointName: 'PE-KeyVault-${environment}'
+  }
+}
+
+// Creates Azure Key Vault for secure secret management.
+
+module keyVault './modules/security/keyVault.bicep' = {
+  name: 'keyVaultDeployment'
+  scope: rgSharedServices
+
+  params: {
+    location: location
+    environment: environment
+  }
+}
 
 
