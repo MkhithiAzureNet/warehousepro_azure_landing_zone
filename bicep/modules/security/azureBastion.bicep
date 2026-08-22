@@ -49,6 +49,9 @@ resource bastionPublicIp 'Microsoft.Network/publicIPAddresses@2024-05-01' = {
 resource bastion 'Microsoft.Network/bastionHosts@2024-05-01' = {
   name: bastionName
   location: location
+  sku: {
+    name: 'Basic'
+  }
   properties: {
     ipConfigurations: [
       {
