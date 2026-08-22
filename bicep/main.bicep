@@ -183,6 +183,20 @@ module hubSubnets './modules/networking/hubSubnets.bicep' = {
   }
 }
 
+// Creates Azure Bastion for secure administrative access.
+
+module azureBastion './modules/security/azureBastion.bicep' = {
+  name: 'azureBastionDeployment'
+
+  scope: rgNetworking
+
+  params: {
+    location: location
+    environment: environment
+    bastionSubnetId: hubSubnets.outputs.azureBastionSubnetId
+  }
+}
+
 // Creates the Johannesburg Spoke Virtual Network.
 
 module spokeVirtualNetworkJHB './modules/networking/spokeVirtualNetworks.bicep' = {
@@ -195,10 +209,10 @@ module spokeVirtualNetworkJHB './modules/networking/spokeVirtualNetworks.bicep' 
 ]
 
   params: {
-    location: location
     environment: environment
     site: 'JHB'
     addressSpace: '10.1.0.0/16'
+    location: location
   }
 }
 
@@ -252,7 +266,6 @@ module workloadSubnetJHB './modules/networking/workloadSubnets.bicep' = {
   ]
 
   params: {
-    location: location
     environment: environment
     site: 'JHB'
     subnetPrefix: '10.1.1.0/24'
@@ -272,7 +285,6 @@ module workloadSubnetDBN './modules/networking/workloadSubnets.bicep' = {
 ]
 
   params: {
-    location: location
     environment: environment
     site: 'DBN'
     subnetPrefix: '10.2.1.0/24'
@@ -292,7 +304,6 @@ module workloadSubnetCPT './modules/networking/workloadSubnets.bicep' = {
 ]
 
   params: {
-    location: location
     environment: environment
     site: 'CPT'
     subnetPrefix: '10.3.1.0/24'

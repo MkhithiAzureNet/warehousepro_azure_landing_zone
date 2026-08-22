@@ -22,9 +22,6 @@ targetScope = 'resourceGroup'
 // PARAMETERS
 ////////////////////////////////////////////////////////////
 
-@description('Deployment location')
-param location string
-
 @description('Environment name')
 param environment string
 
