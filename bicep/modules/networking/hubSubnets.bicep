@@ -88,3 +88,8 @@ resource hubSubnets 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = [
 output hubSubnetNames array = [
   for subnet in hubSubnetNames: subnet.name
 ]
+
+@description('Azure Bastion Subnet Resource ID')
+output azureBastionSubnetId string = resourceId('Microsoft.Network/virtualNetworks/subnets', hubVirtualNetwork.name, 'AzureBastionSubnet')
+
+
