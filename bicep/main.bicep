@@ -571,4 +571,31 @@ module networkSecurityRulesCPT './modules/security/networkSecurityRules.bicep' =
   }
 }
 
+// Creates Private Endpoint connectivity for Azure PaaS services.
+
+resource hubVnet 'Microsoft.Network/virtualNetworks@2024-05-01' existing = {
+  name: 'VNET-Hub-${environment}'
+  scope: rgNetworking
+}
+
+resource sharedServicesSubnet 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' existing = {
+  parent: hubVnet
+  name: 'SharedServicesSubnet'
+}
+
+// // Creates a Private Endpoint for Azure PaaS services.
+
+// module privateEndpoint './modules/security/privateEndpoint.bicep' = {
+//   name: 'privateEndpointDeployment'
+//   scope: rgSharedServices
+
+//   params: {
+//     location: location
+//     environment: environment
+//     subnetId: sharedServicesSubnet.id
+//     targetResourceId: ...
+//     groupId: ...
+//   }
+// }
+
 
