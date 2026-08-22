@@ -73,6 +73,7 @@ resource hubSubnets 'Microsoft.Network/virtualNetworks/subnets@2024-05-01' = [
 
     properties: {
       addressPrefix: subnet.prefix
+      privateEndpointNetworkPolicies: 'Disabled'
     }
   }
 ]
