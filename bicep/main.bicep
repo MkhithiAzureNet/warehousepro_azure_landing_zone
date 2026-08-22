@@ -610,4 +610,16 @@ module keyVault './modules/security/keyVault.bicep' = {
   }
 }
 
+// Creates the WarehousePro Managed Identity.
+
+module managedIdentity './modules/security/managedIdentity.bicep' = {
+  name: 'managedIdentityDeployment'
+
+  scope: rgIdentity
+
+  params: {
+    location: location
+    environment: environment
+  }
+}
 
