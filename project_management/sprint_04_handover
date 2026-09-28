@@ -1,0 +1,369 @@
+# Sprint 04 Client Handover
+
+---
+
+## Project
+
+WarehousePro Azure Landing Zone
+
+---
+
+## Sprint
+
+Sprint 04 – Azure Security & Identity
+
+---
+
+## Sprint Duration
+
+12 July 2026 – 28 September 2026
+
+---
+
+## Prepared By
+
+Nhlanhla M
+
+Cloud Infrastructure Engineer
+
+# Executive Summary
+
+Sprint 04 successfully implemented the core security and identity capabilities for the WarehousePro Azure Landing Zone using modular Azure Bicep Infrastructure as Code.
+
+The objective of this sprint was to secure the existing Azure Landing Zone through layered network security, centralized firewall inspection, secure administrative access, private connectivity, secure secret management and managed identity authentication.
+
+During implementation several security improvements were introduced. Network Security Groups were implemented across the regional warehouse environments, Azure Firewall was deployed within the central hub, Azure Bastion was introduced for secure administrative access, and Private Endpoint connectivity was implemented for Azure Key Vault.
+
+Azure Key Vault was deployed with RBAC authorization, soft delete, purge protection and public network access disabled. A user-assigned Managed Identity was also deployed and configured for secure Azure resource authentication without requiring stored credentials.
+
+Security validation was performed across the deployed infrastructure. NSGs, security rules, route tables, Azure Firewall, Azure Bastion, Key Vault, Private Endpoint connectivity, Managed Identity and RBAC configuration were validated successfully.
+
+All planned Sprint 04 security capabilities were implemented, validated, documented and prepared for continuation into the next sprint.
+
+# Sprint Objectives
+
+The following objectives were defined during Sprint Planning.
+
+| Objective | Status |
+|----------|--------|
+| Implement Network Security Rules | ✅ Complete |
+| Implement Azure Firewall | ✅ Complete |
+| Implement Azure Bastion | ✅ Complete |
+| Configure Private Endpoints | ✅ Complete |
+| Deploy Azure Key Vault | ✅ Complete |
+| Implement Managed Identities | ✅ Complete |
+| Implement Key Vault RBAC | ✅ Complete |
+| Validate Azure security architecture | ✅ Complete |
+| Update project documentation | ✅ Complete |
+
+# Deliverables Completed
+
+## Azure Security Modules
+
+The following Azure Bicep security modules were developed and successfully validated.
+
+| Module | Purpose | Status |
+|---------|---------|--------|
+| networkSecurityGroups.bicep | Deploy Network Security Groups | ✅ |
+| azureFirewall.bicep | Deploy Azure Firewall | ✅ |
+| azureBastion.bicep | Deploy Azure Bastion | ✅ |
+| privateEndpoint.bicep | Deploy Private Endpoints | ✅ |
+| keyVault.bicep | Deploy Azure Key Vault | ✅ |
+| managedIdentity.bicep | Deploy Managed Identity | ✅ |
+| keyVaultRbac.bicep | Configure Key Vault RBAC | ✅ |
+
+---
+
+## Network Security
+
+Validated deployment of:
+
+- NSG-WH-JHB-Prod
+- NSG-WH-DBN-Prod
+- NSG-WH-CPT-Prod
+- Deny-Internet security rules
+- Allow-AzureLoadBalancer security rules
+
+---
+
+## Azure Firewall
+
+Validated deployment of:
+
+- AFW-WarehousePro-Prod
+- AFWP-WarehousePro-Prod
+- PIP-AzureFirewall-Prod
+
+Validated configuration includes:
+
+- Standard SKU
+- Threat Intelligence mode
+- Firewall Policy association
+- Centralized traffic inspection
+
+---
+
+## Azure Bastion
+
+Validated deployment of:
+
+- Bastion-WarehousePro-Prod
+- PIP-Bastion-WarehousePro-Prod
+
+Azure Bastion provides secure administrative access without exposing direct RDP or SSH access to the public Internet.
+
+---
+
+## Private Connectivity
+
+Validated deployment of:
+
+- PE-KeyVault-Prod
+
+The Private Endpoint is connected to:
+
+- VNET-Hub-Prod
+- SharedServicesSubnet
+
+The Private Endpoint connection to Azure Key Vault was validated successfully.
+
+---
+
+## Azure Key Vault
+
+Validated deployment of:
+
+- KV-WarehousePro-Prod
+
+Security configuration includes:
+
+- RBAC authorization enabled
+- Soft delete enabled
+- Purge protection enabled
+- Public network access disabled
+- Standard SKU
+
+---
+
+## Managed Identity
+
+Validated deployment of:
+
+- MI-WarehousePro-Prod
+
+The Managed Identity provides secure authentication for Azure resources without requiring credentials to be stored within application configuration or Infrastructure as Code.
+
+---
+
+## Azure RBAC
+
+Validated implementation of Key Vault RBAC.
+
+The WarehousePro Managed Identity was configured with:
+
+- Role: Key Vault Secrets User
+- Scope: KV-WarehousePro-Prod
+
+The RBAC implementation follows the least-privilege security principle and allows the Managed Identity to access Key Vault secrets without requiring stored credentials.
+
+# Azure Resources Validated
+
+## Networking
+
+Validated:
+
+- Hub Virtual Network
+- Hub Subnets
+- Regional Spoke Virtual Networks
+- Workload Subnets
+- Route Tables
+- Hub-and-Spoke Virtual Network Peerings
+
+---
+
+## Network Security
+
+Validated:
+
+- NSG-WH-JHB-Prod
+- NSG-WH-DBN-Prod
+- NSG-WH-CPT-Prod
+- Deny-Internet rules
+- Allow-AzureLoadBalancer rules
+- Default routes to Azure Firewall
+
+---
+
+## Security Services
+
+Validated:
+
+- AFW-WarehousePro-Prod
+- AFWP-WarehousePro-Prod
+- Bastion-WarehousePro-Prod
+- KV-WarehousePro-Prod
+- PE-KeyVault-Prod
+- MI-WarehousePro-Prod
+- Key Vault RBAC configuration
+
+# Architecture Improvements
+
+Sprint 04 introduced significant security architecture improvements.
+
+The implemented design includes:
+
+- Layered network security
+- Centralized Azure Firewall inspection
+- Secure administrative access through Azure Bastion
+- Regional Network Security Groups
+- Controlled spoke routing
+- Private Azure PaaS connectivity
+- Azure Key Vault security controls
+- Managed Identity authentication
+- Azure RBAC
+- Least-privilege access
+- Secure secret management
+- Disabled public network access for Key Vault
+
+The architecture now provides a stronger security foundation for future WarehousePro workload deployments.
+
+# Quality Assurance
+
+The following validation activities were successfully completed.
+
+| Validation | Status |
+|------------|--------|
+| Azure Bicep Build Validation | ✅ |
+| Azure Deployment Validation | ✅ |
+| Azure Portal Verification | ✅ |
+| Azure CLI Validation | ✅ |
+| Network Security Validation | ✅ |
+| Azure Firewall Validation | ✅ |
+| Azure Bastion Validation | ✅ |
+| Key Vault Validation | ✅ |
+| Private Endpoint Validation | ✅ |
+| Managed Identity Validation | ✅ |
+| RBAC Validation | ✅ |
+| Security Architecture Validation | ✅ |
+| Documentation Review | ✅ |
+
+# Deployment Evidence
+
+Deployment evidence has been captured and stored within the project repository.
+
+Evidence includes:
+
+- Azure Portal screenshots
+- Azure CLI validation output
+- Azure Firewall validation
+- Azure Bastion validation
+- NSG security rule validation
+- Key Vault validation
+- Private Endpoint validation
+- Managed Identity validation
+- Security validation screenshots
+- Git commit history
+- Updated architecture documentation
+- ADR documentation
+- Lessons Learned
+- Sprint documentation
+
+# Risks
+
+Current project risks are considered low.
+
+Potential future risks include:
+
+- Increased security configuration complexity as additional Azure services are introduced.
+
+- Additional governance requirements as the Azure platform expands.
+
+- Increased operational complexity as production workloads are introduced.
+
+- Ongoing monitoring and security configuration requirements as additional workloads are deployed.
+
+Mitigation strategies will be addressed during future platform development and security hardening activities.
+
+# Recommendations
+
+The following recommendations are proposed.
+
+- Continue Infrastructure as Code using Azure Bicep.
+
+- Continue maintaining reusable security modules.
+
+- Continue implementing least-privilege Azure RBAC.
+
+- Continue using Managed Identity instead of stored credentials.
+
+- Continue using Private Endpoints for supported Azure PaaS services.
+
+- Maintain Azure Firewall as the central inspection point for spoke traffic.
+
+- Continue documenting Architecture Decision Records.
+
+- Continue maintaining standardized module interfaces.
+
+- Continue incremental deployment validation.
+
+- Continue maintaining engineering documentation.
+
+# Sprint Acceptance
+
+Sprint 04 acceptance criteria have been satisfied.
+
+| Deliverable | Status |
+|-------------|--------|
+| Security Modules Complete | ✅ |
+| Network Security Implemented | ✅ |
+| Azure Firewall Deployed | ✅ |
+| Azure Bastion Deployed | ✅ |
+| Private Endpoints Configured | ✅ |
+| Azure Key Vault Deployed | ✅ |
+| Managed Identity Implemented | ✅ |
+| Key Vault RBAC Configured | ✅ |
+| Security Validation Complete | ✅ |
+| Documentation Complete | ✅ |
+| Architecture Validated | ✅ |
+| Git Repository Updated | ✅ |
+| Screenshots Captured | ✅ |
+
+# Sprint Status
+
+**Accepted**
+
+# Planned Scope for Sprint 05
+
+Sprint 05 will build upon the secured Azure Landing Zone foundation established during Sprint 04.
+
+Planned deliverables will include the next phase of Azure platform implementation and workload readiness.
+
+Planned activities include:
+
+- Continue Azure platform implementation
+- Build upon the secured hub-and-spoke architecture
+- Implement additional Azure platform services
+- Continue Infrastructure as Code development
+- Continue security hardening
+- Continue monitoring and operational readiness
+- Update project documentation
+- Update Architecture Decision Records
+- Maintain deployment validation and testing
+
+# Client Sign-off
+
+| Role | Name | Signature | Date |
+|------|------|-----------|------|
+| Cloud Infrastructure Engineer | Nhlanhla M | *________________* | *________________* |
+| Infrastructure Manager | *________________________* | *________________* | *________________* |
+| Project Sponsor (CIO) | *________________________* | *________________* | *________________* |
+
+# Conclusion
+
+Sprint 04 successfully secured the WarehousePro Azure Landing Zone through the implementation of layered Azure security and identity capabilities.
+
+The Azure environment now supports centralized firewall inspection, secure administrative access through Azure Bastion, regional Network Security Groups, controlled spoke routing, private Azure Key Vault connectivity, secure secret management, Managed Identity authentication and Azure RBAC.
+
+The implementation continues the architecture established during the previous sprints and strengthens the platform foundation for future workload deployment and expansion.
+
+Combined with the Azure Landing Zone foundation established during Sprint 01, the enterprise networking platform delivered during Sprint 02, and the modular Azure Bicep Infrastructure as Code framework delivered during Sprint 03, the project now provides a secure, scalable and maintainable Azure platform prepared for the next phase of development during Sprint 05.
