@@ -623,3 +623,30 @@ module managedIdentity './modules/security/managedIdentity.bicep' = {
   }
 }
 
+////////////////////////////////////////////////////////////
+// STAGE 4 - SECURITY
+////////////////////////////////////////////////////////////
+
+// Assigns Key Vault permissions to the WarehousePro managed identity.
+
+////////////////////////////////////////////////////////////
+// Key Vault RBAC
+////////////////////////////////////////////////////////////
+
+// Assigns Key Vault Secrets User permissions to the WarehousePro managed identity.
+
+module keyVaultRbac './modules/security/keyVaultRbac.bicep' = {
+  name: 'keyVaultRbacDeployment'
+
+  scope: rgSharedServices
+
+  dependsOn: [
+    keyVault
+  ]
+
+  params: {
+    keyVaultName: 'KV-WarehousePro-${environment}'
+    principalId: managedIdentity.outputs.principalId
+    roleDefinitionId: '4633458b-17de-408a-b874-0445c86b69e6'
+  }
+}
