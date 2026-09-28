@@ -23,10 +23,19 @@ param principalId string
 param roleDefinitionId string
 
 ////////////////////////////////////////////////////////////
+// VARIABLES
+////////////////////////////////////////////////////////////
+
+var roleDefinitionResourceId = subscriptionResourceId(
+  'Microsoft.Authorization/roleDefinitions',
+  roleDefinitionId
+)
+
+////////////////////////////////////////////////////////////
 // EXISTING RESOURCES
 ////////////////////////////////////////////////////////////
 
-resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+resource keyVault 'Microsoft.KeyVault/vaults@2024-04-01-preview' existing = {
   name: keyVaultName
 }
 
@@ -35,13 +44,13 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 ////////////////////////////////////////////////////////////
 
 resource keyVaultRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(keyVault.id, principalId, roleDefinitionId)
+  name: guid(keyVault.id, principalId, roleDefinitionResourceId)
 
   scope: keyVault
 
   properties: {
     principalId: principalId
-    roleDefinitionId: roleDefinitionId
+    roleDefinitionId: roleDefinitionResourceId
     principalType: 'ServicePrincipal'
   }
 }
